@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    font-size: 14;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    height: 100vh;
+}
+
+.title-bar {
+    height: 5vh;
+    background-color: #017c41;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-bar {
+    height: 5vh;
+    background-color: #017c41;
+    display: flex;
+}
+
+.menu-item {
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fff;
+    font-size: 18;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item:hover {
+    background-color: #016836;
+    cursor: pointer;
+}
+
+.menu-item.selected {
+    background-color: #fff;
+    color: #017c41;
+}
+
+.menu-item.selected:hover {
+    background-color: #fff;
+    cursor: default;
+}
+
+.menu-icon-bar {
+    height: 6vh;
+}
+
+.formula-bar {
+    height: 5vh;
+}
+
+.data-container {
+    height: 75vh;
+}
+
+.sheet-bar {
+    height: 4vh;
+}
