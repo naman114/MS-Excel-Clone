@@ -76,6 +76,19 @@ body {
     cursor: pointer;
 }
 
+.selector {
+    height: 30px;
+    font-size: 18px;
+}
+
+.selector option {
+    font-size: 18px;
+}
+
+.font-family-selector {
+    width: 150px;
+}
+
 /* Formula Bar */
 .formula-bar {
     height: 5vh;
