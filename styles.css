@@ -8,10 +8,12 @@ body {
     box-sizing: border-box;
 }
 
+/* Outermost div */
 .container {
     height: 100vh;
 }
 
+/* Title of the sheet */
 .title-bar {
     height: 5vh;
     background-color: #017c41;
@@ -22,6 +24,7 @@ body {
     align-items: center;
 }
 
+/* Menu bar & Menu Items */
 .menu-bar {
     height: 5vh;
     background-color: #017c41;
@@ -52,18 +55,38 @@ body {
     cursor: default;
 }
 
+/* Menu Icon Bar */
 .menu-icon-bar {
     height: 6vh;
+    background-color: rgb(241, 241, 241);
+    display: flex;
+    align-items: center;
 }
 
+.menu-icon {
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.menu-icon:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+/* Formula Bar */
 .formula-bar {
     height: 5vh;
 }
 
+/* Data Container */
 .data-container {
     height: 75vh;
 }
 
+/* Sheet Bar */
 .sheet-bar {
     height: 4vh;
 }
