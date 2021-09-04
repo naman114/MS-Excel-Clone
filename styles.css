@@ -89,6 +89,11 @@ body {
     width: 150px;
 }
 
+.menu-icon.selected{
+    background-color: lightgray;
+}
+
+
 /* Formula Bar */
 .formula-bar {
     height: 5vh;
@@ -184,6 +189,10 @@ body {
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     outline-color: #017c41;
+}
+
+.input-cell.selected{
+    border: 2px solid #017c41;
 }
 
 /* Sheet Bar */

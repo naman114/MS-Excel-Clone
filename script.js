@@ -38,4 +38,21 @@ $(document).ready(function () {
     }
     $(".input-cell-container").append(CellRow);
   }
+
+  $(".align-icon").click(function (e) {
+    e.preventDefault();
+    $(".align-icon.selected").removeClass("selected");
+    $(this).addClass("selected");
+  });
+
+  $(".style-icon").click(function (e) {
+    e.preventDefault();
+    $(this).toggleClass("selected");
+  });
+
+  $(".input-cell").click(function (e) {
+    e.preventDefault();
+    $(".input-cell.selected").removeClass("selected");
+    $(this).addClass("selected");
+  });
 });
