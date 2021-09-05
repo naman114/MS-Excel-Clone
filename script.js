@@ -45,6 +45,31 @@ $(document).ready(function () {
     $(this).addClass("selected");
   });
 
+  // Making cells bold. Toggle should be after this function. (Sequential Execution)
+  $(".icon-bold").click(function () {
+    if ($(this).hasClass("selected")) {
+      UpdateCells("font-weight", "");
+    } else {
+      UpdateCells("font-weight", "bold");
+    }
+  });
+
+  $(".icon-italic").click(function () {
+    if ($(this).hasClass("selected")) {
+      UpdateCells("font-style", "");
+    } else {
+      UpdateCells("font-style", "italic");
+    }
+  });
+
+  $(".icon-underline").click(function () {
+    if ($(this).hasClass("selected")) {
+      UpdateCells("text-decoration", "");
+    } else {
+      UpdateCells("text-decoration", "underline");
+    }
+  });
+
   $(".style-icon").click(function (e) {
     e.preventDefault();
     $(this).toggleClass("selected");
@@ -114,6 +139,10 @@ $(document).ready(function () {
     $(this).focus();
   });
 
+  $(".input-cell").blur(function () {
+    $(".input-cell.selected").attr("contenteditable", "false");
+  });
+
   // Making row and column name containers scroll with the input cell container
 
   $(".input-cell-container").scroll(function () {
@@ -127,4 +156,10 @@ function GetRowCol(e) {
   let row = parseInt(idArray[1]);
   let col = parseInt(idArray[3]);
   return [row, col];
+}
+
+function UpdateCells(property, value) {
+  $(".input-cell.selected").each(function () {
+    $(this).css(property, value);
+  });
 }
