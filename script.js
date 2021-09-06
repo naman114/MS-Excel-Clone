@@ -1,3 +1,22 @@
+let DefaultProperties = {
+  text: "",
+  "font-weight": "",
+  "font-style": "",
+  "text-decoration": "",
+  "text-align": "",
+  "background-color": "white",
+  color: "black",
+  "font-family": "Noto Sans",
+  "font-size": 14,
+};
+
+let CellData = {
+  "Sheet-1": {},
+};
+
+let SelectedSheet = "Sheet-1";
+let TotalSheets = 0;
+
 $(document).ready(function () {
   for (let i = 1; i <= 100; i++) {
     let ColumnCode = "";
@@ -45,28 +64,28 @@ $(document).ready(function () {
     $(this).addClass("selected");
   });
 
-  // Making cells bold. Toggle should be after this function. (Sequential Execution)
+  // Making cells bold, italic, underline. Toggle should be after this function. (Sequential Execution)
   $(".icon-bold").click(function () {
     if ($(this).hasClass("selected")) {
-      UpdateCells("font-weight", "");
+      UpdateCells("font-weight", "", true);
     } else {
-      UpdateCells("font-weight", "bold");
+      UpdateCells("font-weight", "bold", false);
     }
   });
 
   $(".icon-italic").click(function () {
     if ($(this).hasClass("selected")) {
-      UpdateCells("font-style", "");
+      UpdateCells("font-style", "", true);
     } else {
-      UpdateCells("font-style", "italic");
+      UpdateCells("font-style", "italic", false);
     }
   });
 
   $(".icon-underline").click(function () {
     if ($(this).hasClass("selected")) {
-      UpdateCells("text-decoration", "");
+      UpdateCells("text-decoration", "", true);
     } else {
-      UpdateCells("text-decoration", "underline");
+      UpdateCells("text-decoration", "underline", false);
     }
   });
 
@@ -158,8 +177,34 @@ function GetRowCol(e) {
   return [row, col];
 }
 
-function UpdateCells(property, value) {
+function UpdateCells(property, value, defaultPossible) {
   $(".input-cell.selected").each(function () {
     $(this).css(property, value);
+    let [row, col] = GetRowCol(this);
+
+    if (CellData[SelectedSheet][row]) {
+      if (CellData[SelectedSheet][row][col]) {
+        CellData[SelectedSheet][row][col][property] = value;
+      } else {
+        CellData[SelectedSheet][row][col] = { ...DefaultProperties };
+        CellData[SelectedSheet][row][col][property] = value;
+      }
+    } else {
+      CellData[SelectedSheet][row] = {};
+      CellData[SelectedSheet][row][col] = { ...DefaultProperties };
+      CellData[SelectedSheet][row][col][property] = value;
+    }
+    if (defaultPossible) {
+      let IsDefault =
+        JSON.stringify(CellData[SelectedSheet][row][col]) ===
+        JSON.stringify(DefaultProperties);
+      if (IsDefault) {
+        delete CellData[SelectedSheet][row][col];
+        if (Object.keys(CellData[SelectedSheet][row]).length == 0) {
+          delete CellData[SelectedSheet][row];
+        }
+      }
+    }
   });
+  console.log(CellData);
 }
