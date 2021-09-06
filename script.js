@@ -3,7 +3,7 @@ let DefaultProperties = {
   "font-weight": "",
   "font-style": "",
   "text-decoration": "",
-  "text-align": "",
+  "text-align": "left",
   "background-color": "white",
   color: "black",
   "font-family": "Noto Sans",
@@ -58,12 +58,6 @@ $(document).ready(function () {
     $(".input-cell-container").append(CellRow);
   }
 
-  $(".align-icon").click(function (e) {
-    e.preventDefault();
-    $(".align-icon.selected").removeClass("selected");
-    $(this).addClass("selected");
-  });
-
   // Making cells bold, italic, underline. Toggle should be after this function. (Sequential Execution)
   $(".icon-bold").click(function () {
     if ($(this).hasClass("selected")) {
@@ -94,6 +88,31 @@ $(document).ready(function () {
     $(this).toggleClass("selected");
   });
 
+  // Text Alignment
+
+  $(".icon-align-left").click(function () {
+    if (!$(this).hasClass("selected")) {
+      UpdateCells("text-align", "left", true);
+    }
+  });
+
+  $(".icon-align-right").click(function () {
+    if (!$(this).hasClass("selected")) {
+      UpdateCells("text-align", "right", false);
+    }
+  });
+
+  $(".icon-align-center").click(function () {
+    if (!$(this).hasClass("selected")) {
+      UpdateCells("text-align", "center", false);
+    }
+  });
+
+  $(".align-icon").click(function (e) {
+    e.preventDefault();
+    $(".align-icon.selected").removeClass("selected");
+    $(this).addClass("selected");
+  });
   // Selecting cells by single click (Ctrl key must be pressed for multiple cell selection)
 
   $(".input-cell").click(function (e) {
