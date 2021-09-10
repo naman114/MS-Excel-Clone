@@ -187,8 +187,10 @@ $(document).ready(function () {
     $(this).focus();
   });
 
+  // Removing editing ability after blur and detecting text addition in a cell and updating cell data
   $(".input-cell").blur(function () {
     $(".input-cell.selected").attr("contenteditable", "false");
+    UpdateCells("text", $(this).text(), true);
   });
 
   // Making row and column name containers scroll with the input cell container
@@ -289,7 +291,6 @@ function UpdateHeader(ele) {
   $(".text-color-picker").val(CurCellData["color"]);
 
   // Font family and size
-  console.log("CSS");
   $(".font-family-selector").val(CurCellData["font-family"]);
   $(".font-family-selector").css("font-family", CurCellData["font-family"]);
   $(".font-size-selector").val(CurCellData["font-size"]);
