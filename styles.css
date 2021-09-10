@@ -93,6 +93,19 @@ body {
     background-color: lightgray;
 }
 
+.icon-color-fill, .icon-color-text{
+    position: relative;
+}
+
+.input-color-bar {
+    position: absolute;
+    top: 30px;
+    height: 5.75px;
+    width: 26px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
 
 /* Formula Bar */
 .formula-bar {

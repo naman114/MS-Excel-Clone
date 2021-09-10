@@ -166,7 +166,36 @@ $(document).ready(function () {
       $(".input-cell.bottom-cell-selected").removeClass("bottom-cell-selected");
     }
     $(this).addClass("selected");
+    UpdateHeader(this);
   });
+
+  function UpdateHeader(ele) {
+    let [row, col] = GetRowCol(ele);
+    let CurCellData = DefaultProperties;
+    if (CellData[SelectedSheet][row] && CellData[SelectedSheet][row][col]) {
+      CurCellData = CellData[SelectedSheet][row][col];
+    }
+
+    CurCellData["font-weight"]
+      ? $(".icon-bold").addClass("selected")
+      : $(".icon-bold").removeClass("selected");
+    CurCellData["font-style"]
+      ? $(".icon-italic").addClass("selected")
+      : $(".icon-italic").removeClass("selected");
+    CurCellData["text-decoration"]
+      ? $(".icon-underline").addClass("selected")
+      : $(".icon-underline").removeClass("selected");
+
+    CurCellData["text-align"] == "left"
+      ? $(".icon-align-left").addClass("selected")
+      : $(".icon-align-left").removeClass("selected");
+    CurCellData["text-align"] == "right"
+      ? $(".icon-align-right").addClass("selected")
+      : $(".icon-align-right").removeClass("selected");
+    CurCellData["text-align"] == "center"
+      ? $(".icon-align-center").addClass("selected")
+      : $(".icon-align-center").removeClass("selected");
+  }
 
   // Making cells editable by double-click
 
