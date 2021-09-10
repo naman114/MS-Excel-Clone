@@ -4,8 +4,8 @@ let DefaultProperties = {
   "font-style": "",
   "text-decoration": "",
   "text-align": "left",
-  "background-color": "white",
-  color: "black",
+  "background-color": "#ffffff",
+  color: "#000000",
   "font-family": "Noto Sans",
   "font-size": 14,
 };
@@ -215,6 +215,24 @@ $(document).ready(function () {
   $(".input-cell-container").scroll(function () {
     $(".col-name-container").scrollLeft(this.scrollLeft);
     $(".row-name-container").scrollTop(this.scrollTop);
+  });
+
+  // Color pickers
+
+  $(".bg-color-click").click(function () {
+    $(".background-color-picker").click();
+  });
+
+  $(".text-color-click").click(function () {
+    $(".text-color-picker").click();
+  });
+
+  $(".background-color-picker").change(function () {
+    UpdateCells("background-color", $(this).val(), true);
+  });
+
+  $(".text-color-picker").change(function () {
+    UpdateCells("color", $(this).val(), true);
   });
 });
 
