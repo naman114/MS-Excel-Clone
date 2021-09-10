@@ -7,7 +7,7 @@ let DefaultProperties = {
   "background-color": "#ffffff",
   color: "#000000",
   "font-family": "Noto Sans",
-  "font-size": 14,
+  "font-size": "18px",
 };
 
 let CellData = {
@@ -57,6 +57,15 @@ $(document).ready(function () {
     }
     $(".input-cell-container").append(CellRow);
   }
+
+  // Font family and font size
+
+  $(".font-family-selector").change(function () {
+    UpdateCells("font-family", $(this).val(), true);
+  });
+  $(".font-size-selector").change(function () {
+    UpdateCells("font-size", $(this).val(), true);
+  });
 
   // Making cells bold, italic, underline. Toggle should be after this function. (Sequential Execution)
   $(".icon-bold").click(function () {
@@ -113,8 +122,8 @@ $(document).ready(function () {
     $(".align-icon.selected").removeClass("selected");
     $(this).addClass("selected");
   });
-  // Selecting cells by single click (Ctrl key must be pressed for multiple cell selection)
 
+  // Selecting cells by single click (Ctrl key must be pressed for multiple cell selection)
   $(".input-cell").click(function (e) {
     if (e.ctrlKey) {
       let [row, col] = GetRowCol(this);
@@ -168,34 +177,6 @@ $(document).ready(function () {
     $(this).addClass("selected");
     UpdateHeader(this);
   });
-
-  function UpdateHeader(ele) {
-    let [row, col] = GetRowCol(ele);
-    let CurCellData = DefaultProperties;
-    if (CellData[SelectedSheet][row] && CellData[SelectedSheet][row][col]) {
-      CurCellData = CellData[SelectedSheet][row][col];
-    }
-
-    CurCellData["font-weight"]
-      ? $(".icon-bold").addClass("selected")
-      : $(".icon-bold").removeClass("selected");
-    CurCellData["font-style"]
-      ? $(".icon-italic").addClass("selected")
-      : $(".icon-italic").removeClass("selected");
-    CurCellData["text-decoration"]
-      ? $(".icon-underline").addClass("selected")
-      : $(".icon-underline").removeClass("selected");
-
-    CurCellData["text-align"] == "left"
-      ? $(".icon-align-left").addClass("selected")
-      : $(".icon-align-left").removeClass("selected");
-    CurCellData["text-align"] == "right"
-      ? $(".icon-align-right").addClass("selected")
-      : $(".icon-align-right").removeClass("selected");
-    CurCellData["text-align"] == "center"
-      ? $(".icon-align-center").addClass("selected")
-      : $(".icon-align-center").removeClass("selected");
-  }
 
   // Making cells editable by double-click
 
@@ -271,6 +252,45 @@ function UpdateCells(property, value, defaultPossible) {
         }
       }
     }
+    UpdateHeader(this);
   });
   console.log(CellData);
+}
+
+function UpdateHeader(ele) {
+  let [row, col] = GetRowCol(ele);
+  let CurCellData = DefaultProperties;
+  if (CellData[SelectedSheet][row] && CellData[SelectedSheet][row][col]) {
+    CurCellData = CellData[SelectedSheet][row][col];
+  }
+
+  CurCellData["font-weight"]
+    ? $(".icon-bold").addClass("selected")
+    : $(".icon-bold").removeClass("selected");
+  CurCellData["font-style"]
+    ? $(".icon-italic").addClass("selected")
+    : $(".icon-italic").removeClass("selected");
+  CurCellData["text-decoration"]
+    ? $(".icon-underline").addClass("selected")
+    : $(".icon-underline").removeClass("selected");
+
+  CurCellData["text-align"] == "left"
+    ? $(".icon-align-left").addClass("selected")
+    : $(".icon-align-left").removeClass("selected");
+  CurCellData["text-align"] == "right"
+    ? $(".icon-align-right").addClass("selected")
+    : $(".icon-align-right").removeClass("selected");
+  CurCellData["text-align"] == "center"
+    ? $(".icon-align-center").addClass("selected")
+    : $(".icon-align-center").removeClass("selected");
+
+  // Pickers
+  $(".background-color-picker").val(CurCellData["background-color"]);
+  $(".text-color-picker").val(CurCellData["color"]);
+
+  // Font family and size
+  console.log("CSS");
+  $(".font-family-selector").val(CurCellData["font-family"]);
+  $(".font-family-selector").css("font-family", CurCellData["font-family"]);
+  $(".font-size-selector").val(CurCellData["font-size"]);
 }

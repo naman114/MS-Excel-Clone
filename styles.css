@@ -87,6 +87,7 @@ body {
 
 .font-family-selector {
     width: 150px;
+    font-family: "Noto Sans";
 }
 
 .menu-icon.selected{
@@ -205,6 +206,8 @@ body {
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     outline-color: #017c41;
+    font-size: 18px;
+    font-family: "Noto Sans";
 }
 
 .input-cell.selected{
