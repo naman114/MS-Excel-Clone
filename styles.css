@@ -265,7 +265,6 @@ body {
 }
 
 .sheet-tab {
-    border-bottom: 4px solid #017c41;
     margin-left: 1px;
     margin-right: 1px;
     font-size: 18px;
@@ -275,5 +274,12 @@ body {
 }
 
 .sheet-tab:hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
+
+.sheet-tab.selected{
+    border-bottom: 4px solid #017c41;
+    background-color: #fff;
     cursor: default;
 }

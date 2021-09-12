@@ -11,13 +11,16 @@ let DefaultProperties = {
 };
 
 let CellData = {
-  "Sheet-1": {},
+  "Sheet 1": {},
 };
 
-let SelectedSheet = "Sheet-1";
-let TotalSheets = 0;
+let SelectedSheet = "Sheet 1";
+let TotalSheets = 1;
+// The TotalSheets cannot be zero since you cannot delete the original sheet
+let LastAddedSheet = 1;
 
 $(document).ready(function () {
+  // Section: Column Code Generation and appending Column Elements to HTML
   for (let i = 1; i <= 100; i++) {
     let ColumnCode = "";
 
@@ -39,14 +42,14 @@ $(document).ready(function () {
     );
     $(".col-name-container").append(ColumnTag);
   }
-
+  // Section: Appending Row Elements to HTML
   for (let RowCode = 1; RowCode <= 100; RowCode++) {
     let RowTag = $(
       `<div class="row-name" id="rowId=${RowCode}">${RowCode}</div>`
     );
     $(".row-name-container").append(RowTag);
   }
-
+  // Section: Appending Cells to HTML
   for (let i = 1; i <= 100; i++) {
     let CellRow = $(`<div class="cell-row"></div>`);
     for (let j = 1; j <= 100; j++) {
@@ -58,7 +61,7 @@ $(document).ready(function () {
     $(".input-cell-container").append(CellRow);
   }
 
-  // Font family and font size
+  // Section: Font family and font size
 
   $(".font-family-selector").change(function () {
     UpdateCells("font-family", $(this).val(), true);
@@ -67,7 +70,11 @@ $(document).ready(function () {
     UpdateCells("font-size", $(this).val(), true);
   });
 
-  // Making cells bold, italic, underline. Toggle should be after this function. (Sequential Execution)
+  // Section: Making cells bold, italic, underline.
+  // Code to toggle the selected class should be after
+  // these functions since we are interested in checking
+  // whether the property is currently selected or not
+
   $(".icon-bold").click(function () {
     if ($(this).hasClass("selected")) {
       UpdateCells("font-weight", "", true);
@@ -97,7 +104,7 @@ $(document).ready(function () {
     $(this).toggleClass("selected");
   });
 
-  // Text Alignment
+  // Section: Text Alignment
 
   $(".icon-align-left").click(function () {
     if (!$(this).hasClass("selected")) {
@@ -123,6 +130,7 @@ $(document).ready(function () {
     $(this).addClass("selected");
   });
 
+  // Section: Cell Selection
   // Selecting cells by single click (Ctrl key must be pressed for multiple cell selection)
   $(".input-cell").click(function (e) {
     if (e.ctrlKey) {
@@ -193,6 +201,7 @@ $(document).ready(function () {
     UpdateCells("text", $(this).text(), true);
   });
 
+  // Section: Scrolling
   // Making row and column name containers scroll with the input cell container
 
   $(".input-cell-container").scroll(function () {
@@ -200,7 +209,7 @@ $(document).ready(function () {
     $(".row-name-container").scrollTop(this.scrollTop);
   });
 
-  // Color pickers
+  // Section: Color pickers
 
   $(".bg-color-click").click(function () {
     $(".background-color-picker").click();
@@ -216,6 +225,31 @@ $(document).ready(function () {
 
   $(".text-color-picker").change(function () {
     UpdateCells("color", $(this).val(), true);
+  });
+
+  // Section: Multiple Sheets
+  $(".icon-add").click(function () {
+    ClearSheet();
+    $(".sheet-tab.selected").removeClass("selected");
+    let SheetName = "Sheet " + (LastAddedSheet + 1);
+    $(".sheet-tab-container").append(
+      `<div class="sheet-tab selected">Sheet ${LastAddedSheet + 1}</div>`
+    );
+    $(".sheet-tab.selected").click(function () {
+      if (!$(this).hasClass("selected")) {
+        SelectTheSheet(this);
+      }
+    });
+    CellData[SheetName] = {};
+    LastAddedSheet++;
+    TotalSheets++;
+    SelectedSheet = `Sheet ${LastAddedSheet}`;
+  });
+
+  $(".sheet-tab").click(function () {
+    if (!$(this).hasClass("selected")) {
+      SelectTheSheet(this);
+    }
   });
 });
 
@@ -297,7 +331,7 @@ function UpdateHeader(ele) {
 }
 
 // Handling Multiple Sheets
-
+// Function to erase all cells currently holding any data
 function ClearSheet() {
   let CurSheetData = CellData[SelectedSheet];
   for (let i of Object.keys(CurSheetData)) {
@@ -315,6 +349,7 @@ function ClearSheet() {
   }
 }
 
+// Function to load existing cell data for a particular sheet
 function LoadSheet() {
   let CurSheetData = CellData[SelectedSheet];
   for (let i of Object.keys(CurSheetData)) {
@@ -337,4 +372,13 @@ function LoadSheet() {
       $(`#row-${i}-col-${j}`).css("font-size", CurCellProps["font-size"]);
     }
   }
+}
+
+// Function to select a new sheet
+function SelectTheSheet(elem) {
+  $(".sheet-tab.selected").removeClass("selected");
+  $(elem).addClass("selected");
+  ClearSheet();
+  SelectedSheet = $(elem).text();
+  LoadSheet();
 }
