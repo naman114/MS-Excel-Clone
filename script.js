@@ -295,3 +295,46 @@ function UpdateHeader(ele) {
   $(".font-family-selector").css("font-family", CurCellData["font-family"]);
   $(".font-size-selector").val(CurCellData["font-size"]);
 }
+
+// Handling Multiple Sheets
+
+function ClearSheet() {
+  let CurSheetData = CellData[SelectedSheet];
+  for (let i of Object.keys(CurSheetData)) {
+    for (let j of Object.keys(CurSheetData[i])) {
+      $(`#row-${i}-col-${j}`).text("");
+      $(`#row-${i}-col-${j}`).css("font-weight", "");
+      $(`#row-${i}-col-${j}`).css("font-style", "");
+      $(`#row-${i}-col-${j}`).css("text-decoration", "");
+      $(`#row-${i}-col-${j}`).css("text-align", "left");
+      $(`#row-${i}-col-${j}`).css("background-color", "#ffffff");
+      $(`#row-${i}-col-${j}`).css("color", "#000000");
+      $(`#row-${i}-col-${j}`).css("font-family", "Noto Sans");
+      $(`#row-${i}-col-${j}`).css("font-size", "18px");
+    }
+  }
+}
+
+function LoadSheet() {
+  let CurSheetData = CellData[SelectedSheet];
+  for (let i of Object.keys(CurSheetData)) {
+    for (let j of Object.keys(CurSheetData[i])) {
+      let CurCellProps = CurSheetData[i][j];
+      $(`#row-${i}-col-${j}`).text(CurCellProps["text"]);
+      $(`#row-${i}-col-${j}`).css("font-weight", CurCellProps["font-weight"]);
+      $(`#row-${i}-col-${j}`).css("font-style", CurCellProps["font-style"]);
+      $(`#row-${i}-col-${j}`).css(
+        "text-decoration",
+        CurCellProps["text-decoration"]
+      );
+      $(`#row-${i}-col-${j}`).css("text-align", CurCellProps["text-align"]);
+      $(`#row-${i}-col-${j}`).css(
+        "background-color",
+        CurCellProps["background-color"]
+      );
+      $(`#row-${i}-col-${j}`).css("color", CurCellProps["color"]);
+      $(`#row-${i}-col-${j}`).css("font-family", CurCellProps["font-family"]);
+      $(`#row-${i}-col-${j}`).css("font-size", CurCellProps["font-size"]);
+    }
+  }
+}
