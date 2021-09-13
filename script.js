@@ -394,6 +394,11 @@ function SheetTabWasClicked() {
       <div class="delete-sheet">Delete</div>
   </div>`);
 
+      //Delete option should be lightened for 1 sheet
+      if (TotalSheets == 1) {
+        $(".delete-sheet").css("color", "lightgray");
+      }
+
       // Place the modal at the point of right-click
       $(".delete-rename-modal").css("left", e.pageX + "px");
 
@@ -426,15 +431,45 @@ function SheetTabWasClicked() {
           // .html or .text can change the innerHTML
           $(".sheet-tab.selected").html(NewSheetName);
 
-          // CellData's key will be updated only if there is a change in the sheet name
+          // So as to preserve the order of the sheets, the following technique is used. It is useful in finding out which sheet
+          // is the next to be selected when the current sheet is deleted.
           if (NewSheetName != SelectedSheet) {
-            CellData[NewSheetName] = CellData[SelectedSheet];
-            delete CellData[SelectedSheet];
+            let TempCellData = {};
+            for (let sheetKey in CellData) {
+              if (sheetKey != SelectedSheet) {
+                TempCellData[sheetKey] = CellData[sheetKey];
+              } else {
+                TempCellData[NewSheetName] = CellData[sheetKey];
+              }
+            }
+            CellData = TempCellData;
           }
 
           SelectedSheet = NewSheetName;
         });
       });
+
+      // Behaviour when delete is clicked
+      $(".delete-sheet").click(function () {
+        if (TotalSheets > 1) {
+          let index = Object.keys(CellData).indexOf(SelectedSheet);
+
+          let CurSheetName = SelectedSheet;
+          let CurSheet = $(".sheet-tab.selected");
+
+          if (index == 0) {
+            $(".sheet-tab.selected").next().click();
+          } else {
+            $(".sheet-tab.selected").prev().click();
+          }
+          CurSheet.remove();
+          delete CellData[CurSheetName];
+          TotalSheets--;
+        }
+      });
+    } else {
+      // If it exists, then shift it to the point of click
+      $(".delete-rename-modal").css("left", e.pageX + "px");
     }
   });
 
