@@ -293,7 +293,7 @@ body {
     background-color: #fff;
     height: 60px;
     width: 70px;
-    box-shadow: 0 0 5px 3px lightgray;
+    box-shadow: 0 0 3px 1px lightgray;
 }
 
 .delete-sheet, .rename-sheet{
@@ -308,4 +308,60 @@ body {
 .delete-sheet:hover, .rename-sheet:hover{
     background-color: lightgray;
     cursor: pointer;
+}
+
+
+/* Rename: On-Click */
+
+.sheet-rename-modal{
+    position: absolute;
+    top: calc(50vh - 100px);
+    left: calc(50vw - 150px);
+    height: 200px;
+    width: 300px;
+    background-color: rgb(216, 216, 216);
+    text-align: center;
+    box-shadow: 0 0 3px 1px lightgray;
+}
+.action-buttons{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.rename-modal-title{
+    font-size: 20px;
+}
+
+.new-sheet-name{
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+    outline-color: #017c41;
+}
+
+.submit-button{
+    background-color: #017c41;
+    color: white;
+    font-weight: 500;
+    padding: 10px 10px;
+    border-radius: 15px;
+}
+
+.submit-button:hover{
+    cursor: pointer;
+    background-color: #025f32;
+}
+
+.cancel-button{
+    background-color: #da3012;
+    color: white;
+    font-weight: 500;
+    padding: 10px 10px;
+    border-radius: 15px;
+}
+
+.cancel-button:hover{
+    cursor: pointer;
+    background-color: #a7250e;
 }

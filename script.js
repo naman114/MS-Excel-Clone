@@ -235,22 +235,15 @@ $(document).ready(function () {
     $(".sheet-tab-container").append(
       `<div class="sheet-tab selected">Sheet ${LastAddedSheet + 1}</div>`
     );
-    $(".sheet-tab.selected").click(function () {
-      if (!$(this).hasClass("selected")) {
-        SelectTheSheet(this);
-      }
-    });
+    SheetTabWasClicked();
     CellData[SheetName] = {};
     LastAddedSheet++;
     TotalSheets++;
     SelectedSheet = `Sheet ${LastAddedSheet}`;
   });
 
-  $(".sheet-tab").click(function () {
-    if (!$(this).hasClass("selected")) {
-      SelectTheSheet(this);
-    }
-  });
+  // Function that defines ALL the behaviour when a sheet tab is clicked / a new sheet tab is added is called
+  SheetTabWasClicked();
 });
 
 function GetRowCol(e) {
@@ -372,6 +365,82 @@ function LoadSheet() {
       $(`#row-${i}-col-${j}`).css("font-size", CurCellProps["font-size"]);
     }
   }
+}
+
+// Function invoked when any sheet tab is clicked
+function SheetTabWasClicked() {
+  $(".sheet-tab").click(function () {
+    if (!$(this).hasClass("selected")) {
+      SelectTheSheet(this);
+    }
+  });
+
+  // When a sheet tab is right clicked
+  $(".sheet-tab").contextmenu(function (e) {
+    e.preventDefault();
+
+    // If the user right clicks a sheet that is not selected, it should be made selected
+    if (!$(this).hasClass("selected")) {
+      SelectTheSheet(this);
+    }
+
+    // Serves as the value of the rename input field
+    let ClickedSheetName = this.innerHTML;
+
+    // Add the right-click menu only if it is not present on screen. length tells the number of occurences of the element in HTML
+    if ($(".delete-rename-modal").length == 0) {
+      $(".container").append(`<div class="delete-rename-modal">
+      <div class="rename-sheet">Rename</div>
+      <div class="delete-sheet">Delete</div>
+  </div>`);
+
+      // Place the modal at the point of right-click
+      $(".delete-rename-modal").css("left", e.pageX + "px");
+
+      // Behavior when Rename is clicked
+      $(".rename-sheet").click(function () {
+        // Add the Rename Box to Container (Outermost Div)
+        $(".container").append(`<div class="sheet-rename-modal">
+        <h4 class="rename-modal-title">Rename Sheet To:</h4>
+        <input type="text" class="new-sheet-name" placeholder="Enter Name" value="${ClickedSheetName}"/>
+        <div class="action-buttons">
+            <div class="submit-button">Rename</div>
+            <div class="cancel-button">Cancel</div>
+        </div>
+    </div>`);
+
+        // When the rename popup opens, the current sheet name should be present and selected in the input field
+        $(".new-sheet-name").select();
+
+        // When Cancel option is clicked, remove the rename-modal
+        $(".cancel-button").click(function () {
+          $(".sheet-rename-modal").remove();
+        });
+
+        // When Rename option is clicked
+        $(".submit-button").click(function () {
+          let NewSheetName = $(".new-sheet-name").val();
+
+          $(".sheet-rename-modal").remove();
+
+          // .html or .text can change the innerHTML
+          $(".sheet-tab.selected").html(NewSheetName);
+
+          // CellData's key will be updated only if there is a change in the sheet name
+          if (NewSheetName != SelectedSheet) {
+            CellData[NewSheetName] = CellData[SelectedSheet];
+            delete CellData[SelectedSheet];
+          }
+
+          SelectedSheet = NewSheetName;
+        });
+      });
+    }
+  });
+
+  $(".container").click(function () {
+    $(".delete-rename-modal").remove();
+  });
 }
 
 // Function to select a new sheet
