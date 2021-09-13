@@ -11,6 +11,7 @@ body {
 /* Outermost div */
 .container {
     height: 100vh;
+    position: relative;
 }
 
 /* Title of the sheet */
@@ -282,4 +283,29 @@ body {
     border-bottom: 4px solid #017c41;
     background-color: #fff;
     cursor: default;
+}
+
+/* Delete Rename Modal */
+
+.delete-rename-modal{
+    position: absolute;
+    bottom: 4vh;
+    background-color: #fff;
+    height: 60px;
+    width: 70px;
+    box-shadow: 0 0 5px 3px lightgray;
+}
+
+.delete-sheet, .rename-sheet{
+    height: 30px;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-sheet:hover, .rename-sheet:hover{
+    background-color: lightgray;
+    cursor: pointer;
 }
