@@ -14,6 +14,9 @@ let CellData = {
   "Sheet 1": {},
 };
 
+let CutOrCopyCells = [];
+let CutOrCopy = "";
+
 let SelectedSheet = "Sheet 1";
 let TotalSheets = 1;
 // The TotalSheets cannot be zero since you cannot delete the original sheet
@@ -254,6 +257,101 @@ $(document).ready(function () {
   $(".icon-right-scroll").click(function () {
     let index = Object.keys(CellData).indexOf(SelectedSheet);
     if (index < TotalSheets - 1) $(".sheet-tab.selected").next().click();
+  });
+
+  // Cut Copy Paste
+  $(".icon-cut").click(function () {
+    CutOrCopyCells = [];
+    CutOrCopy = "cut";
+    $(".input-cell.selected").each(function () {
+      let [row, col] = GetRowCol(this);
+      CutOrCopyCells.push([row, col]);
+    });
+  });
+
+  $(".icon-copy").click(function () {
+    CutOrCopyCells = [];
+    CutOrCopy = "copy";
+    $(".input-cell.selected").each(function () {
+      let [row, col] = GetRowCol(this);
+      CutOrCopyCells.push([row, col]);
+    });
+  });
+
+  $(".icon-paste").click(function () {
+    console.log(CutOrCopy);
+    console.log(CutOrCopyCells);
+
+    // Without pressing cut or copy, paste will not work
+    if (CutOrCopy != "") {
+      // Destination cell (One/Multiple Cells can be selected but paste must be one cell right now)
+      let SelectedCell = $(".input-cell.selected");
+      let [row, col] = GetRowCol(SelectedCell);
+
+      // Sorting so that the top left cell of the selected cells will be used for reference
+      CutOrCopyCells.sort();
+      let dx = row - CutOrCopyCells[0][0];
+      let dy = col - CutOrCopyCells[0][1];
+
+      if (CutOrCopy == "cut") {
+        ClearSheet();
+        for (let i of Object.keys(CutOrCopyCells)) {
+          // If the source cell is not defualt properties
+          if (
+            CellData[SelectedSheet][CutOrCopyCells[i][0]][CutOrCopyCells[i][1]]
+          ) {
+            // Source cell value
+            let value =
+              CellData[SelectedSheet][CutOrCopyCells[i][0]][
+                CutOrCopyCells[i][1]
+              ];
+            let newRow = CutOrCopyCells[i][0] + dx;
+            let newCol = CutOrCopyCells[i][1] + dy;
+
+            if (CellData[SelectedSheet][newRow]) {
+              CellData[SelectedSheet][newRow][newCol] = value;
+            } else {
+              CellData[SelectedSheet][newRow] = {};
+              CellData[SelectedSheet][newRow][newCol] = value;
+            }
+            delete CellData[SelectedSheet][CutOrCopyCells[i][0]][
+              CutOrCopyCells[i][1]
+            ];
+
+            // After moving the cell, update the coordinates. Helpful in further "pasting"
+            CutOrCopyCells[i][0] = newRow;
+            CutOrCopyCells[i][1] = newCol;
+          }
+        }
+        LoadSheet();
+        // Further "pasting" : Once the source cells are deleted, and paste is clicked multiple times, it should behave as copy
+        CutOrCopy = "copy";
+      } else if (CutOrCopy == "copy") {
+        // Only difference from cut is not deleting from CellData
+        ClearSheet();
+
+        for (let i of Object.keys(CutOrCopyCells)) {
+          if (
+            CellData[SelectedSheet][CutOrCopyCells[i][0]][CutOrCopyCells[i][1]]
+          ) {
+            let value =
+              CellData[SelectedSheet][CutOrCopyCells[i][0]][
+                CutOrCopyCells[i][1]
+              ];
+            let newRow = CutOrCopyCells[i][0] + dx;
+            let newCol = CutOrCopyCells[i][1] + dy;
+
+            if (CellData[SelectedSheet][newRow]) {
+              CellData[SelectedSheet][newRow][newCol] = value;
+            } else {
+              CellData[SelectedSheet][newRow] = {};
+              CellData[SelectedSheet][newRow][newCol] = value;
+            }
+          }
+        }
+        LoadSheet();
+      }
+    }
   });
 });
 
