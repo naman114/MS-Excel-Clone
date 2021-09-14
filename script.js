@@ -284,8 +284,8 @@ $(document).ready(function () {
 
     // Without pressing cut or copy, paste will not work
     if (CutOrCopy != "") {
-      // Destination cell (One/Multiple Cells can be selected but paste must be one cell right now)
-      let SelectedCell = $(".input-cell.selected");
+      // Destination cell (One/Multiple Cells can be selected but paste will begin from the "first" cell selected from detination selects)
+      let SelectedCell = $(".input-cell.selected")[0];
       let [row, col] = GetRowCol(SelectedCell);
 
       // Sorting so that the top left cell of the selected cells will be used for reference
@@ -318,6 +318,13 @@ $(document).ready(function () {
               CutOrCopyCells[i][1]
             ];
 
+            // If the row becomes empty, delete it
+            if (
+              Object.keys(CellData[SelectedSheet][CutOrCopyCells[i][0]])
+                .length == 0
+            )
+              delete CellData[SelectedSheet][CutOrCopyCells[i][0]];
+
             // After moving the cell, update the coordinates. Helpful in further "pasting"
             CutOrCopyCells[i][0] = newRow;
             CutOrCopyCells[i][1] = newCol;
@@ -349,6 +356,7 @@ $(document).ready(function () {
             }
           }
         }
+
         LoadSheet();
       }
     }
