@@ -242,11 +242,12 @@ body {
 .icon-left-scroll,
 .icon-right-scroll {
     font-size: 30px;
+    color: lightgray;
 }
 
 .icon-left-scroll:hover,
 .icon-right-scroll:hover {
-    background-color: lightgray;
+    background-color: rgba(211, 211, 211, 0.774);
     cursor: pointer;
 }
 

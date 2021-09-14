@@ -240,10 +240,21 @@ $(document).ready(function () {
     LastAddedSheet++;
     TotalSheets++;
     SelectedSheet = `Sheet ${LastAddedSheet}`;
+    UpdateScrollers();
   });
 
   // Function that defines ALL the behaviour when a sheet tab is clicked / a new sheet tab is added is called
   SheetTabWasClicked();
+
+  // Behaviour of left and right scrollers
+  $(".icon-left-scroll").click(function () {
+    let index = Object.keys(CellData).indexOf(SelectedSheet);
+    if (index > 0) $(".sheet-tab.selected").prev().click();
+  });
+  $(".icon-right-scroll").click(function () {
+    let index = Object.keys(CellData).indexOf(SelectedSheet);
+    if (index < TotalSheets - 1) $(".sheet-tab.selected").next().click();
+  });
 });
 
 function GetRowCol(e) {
@@ -409,11 +420,10 @@ function SheetTabWasClicked() {
         <h4 class="rename-modal-title">Rename Sheet To:</h4>
         <input type="text" class="new-sheet-name" placeholder="Enter Name" value="${ClickedSheetName}"/>
         <div class="action-buttons">
-            <div class="submit-button">Rename</div>
-            <div class="cancel-button">Cancel</div>
+        <div class="submit-button">Rename</div>
+        <div class="cancel-button">Cancel</div>
         </div>
-    </div>`);
-
+        </div>`);
         // When the rename popup opens, the current sheet name should be present and selected in the input field
         $(".new-sheet-name").select();
 
@@ -446,6 +456,7 @@ function SheetTabWasClicked() {
           }
 
           SelectedSheet = NewSheetName;
+          UpdateScrollers();
         });
       });
 
@@ -465,6 +476,7 @@ function SheetTabWasClicked() {
           CurSheet.remove();
           delete CellData[CurSheetName];
           TotalSheets--;
+          UpdateScrollers();
         }
       });
     } else {
@@ -484,5 +496,25 @@ function SelectTheSheet(elem) {
   $(elem).addClass("selected");
   ClearSheet();
   SelectedSheet = $(elem).text();
+  UpdateScrollers();
   LoadSheet();
+}
+
+function UpdateScrollers() {
+  let LeftIconColor = "lightgray";
+  let RightIconColor = "lightgray";
+  if (TotalSheets > 1) {
+    let index = Object.keys(CellData).indexOf(SelectedSheet);
+
+    if (index == 0) RightIconColor = "#000000";
+    else if (index == TotalSheets - 1) LeftIconColor = "#000000";
+    else {
+      LeftIconColor = "#000000";
+      RightIconColor = "#000000";
+    }
+  }
+
+  // Updating the left and right scroll icons
+  $(".icon-left-scroll").css("color", LeftIconColor);
+  $(".icon-right-scroll").css("color", RightIconColor);
 }
