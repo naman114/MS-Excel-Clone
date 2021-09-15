@@ -156,6 +156,19 @@ body {
     height: 30px;
     width: 30px;
     border: 1px solid lightgray;
+    position: relative;
+}
+
+.select-triangle{
+    height: 0px;
+    width: 0px;
+    border-left: 15px solid lightgray;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    transform: rotate(45deg);
+    position: absolute;
+    left: 13px;
+    top: 6px;
 }
 
 .col-name-container {

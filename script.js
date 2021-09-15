@@ -137,47 +137,7 @@ $(document).ready(function () {
   // Selecting cells by single click (Ctrl key must be pressed for multiple cell selection)
   $(".input-cell").click(function (e) {
     if (e.ctrlKey) {
-      let [row, col] = GetRowCol(this);
-      if (row > 1) {
-        let UpperCellSelected = $(`#row-${row - 1}-col-${col}`).hasClass(
-          "selected"
-        );
-        if (UpperCellSelected) {
-          $(this).addClass("top-cell-selected");
-          $(`#row-${row - 1}-col-${col}`).addClass("bottom-cell-selected");
-        }
-      }
-
-      if (col > 1) {
-        let LeftCellSelected = $(`#row-${row}-col-${col - 1}`).hasClass(
-          "selected"
-        );
-        if (LeftCellSelected) {
-          $(this).addClass("left-cell-selected");
-          $(`#row-${row}-col-${col - 1}`).addClass("right-cell-selected");
-        }
-      }
-
-      if (col < 100) {
-        let RightCellSelected = $(`#row-${row}-col-${col + 1}`).hasClass(
-          "selected"
-        );
-
-        if (RightCellSelected) {
-          $(this).addClass("right-cell-selected");
-          $(`#row-${row}-col-${col + 1}`).addClass("left-cell-selected");
-        }
-      }
-
-      if (row < 100) {
-        let BottomCellSelected = $(`#row-${row + 1}-col-${col}`).hasClass(
-          "selected"
-        );
-        if (BottomCellSelected) {
-          $(this).addClass("bottom-cell-selected");
-          $(`#row-${row + 1}-col-${col}`).addClass("top-cell-selected");
-        }
-      }
+      SurroundingCellAwareness(this);
     } else {
       $(".input-cell.selected").removeClass("selected");
       $(".input-cell.left-cell-selected").removeClass("left-cell-selected");
@@ -187,6 +147,15 @@ $(document).ready(function () {
     }
     $(this).addClass("selected");
     UpdateHeader(this);
+  });
+
+  // Selecting all cells
+
+  $(".select-triangle").click(function () {
+    $(".input-cell").each(function () {
+      SurroundingCellAwareness(this);
+      $(this).addClass("selected");
+    });
   });
 
   // Making cells editable by double-click
@@ -368,6 +337,48 @@ function GetRowCol(e) {
   let row = parseInt(idArray[1]);
   let col = parseInt(idArray[3]);
   return [row, col];
+}
+
+function SurroundingCellAwareness(cell) {
+  let [row, col] = GetRowCol(cell);
+  if (row > 1) {
+    let UpperCellSelected = $(`#row-${row - 1}-col-${col}`).hasClass(
+      "selected"
+    );
+    if (UpperCellSelected) {
+      $(cell).addClass("top-cell-selected");
+      $(`#row-${row - 1}-col-${col}`).addClass("bottom-cell-selected");
+    }
+  }
+
+  if (col > 1) {
+    let LeftCellSelected = $(`#row-${row}-col-${col - 1}`).hasClass("selected");
+    if (LeftCellSelected) {
+      $(cell).addClass("left-cell-selected");
+      $(`#row-${row}-col-${col - 1}`).addClass("right-cell-selected");
+    }
+  }
+
+  if (col < 100) {
+    let RightCellSelected = $(`#row-${row}-col-${col + 1}`).hasClass(
+      "selected"
+    );
+
+    if (RightCellSelected) {
+      $(cell).addClass("right-cell-selected");
+      $(`#row-${row}-col-${col + 1}`).addClass("left-cell-selected");
+    }
+  }
+
+  if (row < 100) {
+    let BottomCellSelected = $(`#row-${row + 1}-col-${col}`).hasClass(
+      "selected"
+    );
+    if (BottomCellSelected) {
+      $(cell).addClass("bottom-cell-selected");
+      $(`#row-${row + 1}-col-${col}`).addClass("top-cell-selected");
+    }
+  }
 }
 
 function UpdateCells(property, value, defaultPossible) {
