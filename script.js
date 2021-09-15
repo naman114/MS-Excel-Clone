@@ -146,6 +146,12 @@ $(document).ready(function () {
       $(".input-cell.bottom-cell-selected").removeClass("bottom-cell-selected");
     }
     $(this).addClass("selected");
+
+    // Updating the formula editor as per the selected cell
+    let Address =
+      $(this).attr("class").split(" ")[1].split("-")[1] +
+      $(this).attr("id").split("-")[1];
+    $(".formula-editor.selected-cell").html(Address);
     UpdateHeader(this);
   });
 
