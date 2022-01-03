@@ -38,5 +38,27 @@
     "lint-staged": "^12.1.5",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1"
+  },
+  "lint-staged": {
+    "*.{ts,js}": "eslint --cache --fix",
+    "*.{ts,js,css,md}": "prettier --write",
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  },
+  "_moduleAliases": {
+    "~": "dist/"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "start": "node dist",
+    "build": "yarn tsc",
+    "dev": "nodemon dist",
+    "ts-node": "ts-node --compiler-options {\\\"module\\\":\\\"commonjs\\\"}",
+    "migrate": "prisma migrate dev",
+    "seed": "prisma db seed --preview-feature",
+    "postinstall": "npm run build"
   }
 }
