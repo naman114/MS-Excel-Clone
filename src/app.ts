@@ -6,8 +6,11 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import flash from "connect-flash";
+import mongoose from "mongoose";
 
 export const app = Express();
+
+mongoose.connect("mongodb://127.0.0.1:27017/excel");
 
 app.use(
   cors({
