@@ -1,0 +1,382 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-size: 14;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Outermost div */
+.container {
+  height: 100vh;
+  position: relative;
+}
+
+/* Title of the sheet */
+.title-bar {
+  height: 5vh;
+  background-color: #017c41;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Menu bar & Menu Items */
+.menu-bar {
+  height: 5vh;
+  background-color: #017c41;
+  display: flex;
+}
+
+.menu-item {
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #fff;
+  font-size: 18;
+  display: flex;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background-color: #016836;
+  cursor: pointer;
+}
+
+.menu-item.selected {
+  background-color: #fff;
+  color: #017c41;
+}
+
+.menu-item.selected:hover {
+  background-color: #fff;
+  cursor: default;
+}
+
+/* Menu Icon Bar */
+.menu-icon-bar {
+  height: 6vh;
+  background-color: rgb(241, 241, 241);
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.selector {
+  height: 30px;
+  font-size: 18px;
+}
+
+.selector option {
+  font-size: 18px;
+}
+
+.font-family-selector {
+  width: 150px;
+  font-family: "Noto Sans";
+}
+
+.menu-icon.selected {
+  background-color: lightgray;
+}
+
+.icon-color-fill,
+.icon-color-text {
+  position: relative;
+}
+
+.input-color-bar {
+  position: absolute;
+  top: 30px;
+  height: 5.75px;
+  width: 26px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Formula Bar */
+.formula-bar {
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  background-color: rgb(241, 241, 241);
+}
+
+.formula-editor {
+  height: 70%;
+  border: 1px solid lightgray;
+  background-color: #fff;
+  font-size: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.selected-cell {
+  width: 120px;
+}
+
+.function-sign {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formula-input {
+  width: calc(100vw - 160px);
+  outline-color: #017c41;
+}
+
+/* Data Container */
+.data-container {
+  height: 75vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.select-all {
+  height: 30px;
+  width: 30px;
+  border: 1px solid lightgray;
+  position: relative;
+}
+
+.select-triangle {
+  height: 0px;
+  width: 0px;
+  border-left: 15px solid lightgray;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 13px;
+  top: 6px;
+}
+
+.col-name-container {
+  height: 30px;
+  width: calc(100vw - 30px);
+  border: 1px solid lightgray;
+  display: flex;
+  overflow: hidden;
+}
+
+.col-name {
+  min-width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid lightgray;
+  font-weight: bold;
+}
+
+.row-name-container {
+  height: calc(75vh - 30px);
+  min-width: 30px;
+  border: 1px solid lightgray;
+  overflow: hidden;
+}
+
+.row-name {
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.input-cell-container {
+  height: calc(75vh - 30px);
+  width: calc(100vw - 30px);
+  border: 1px solid lightgray;
+  overflow: scroll;
+}
+
+.cell-row {
+  display: flex;
+}
+
+.input-cell {
+  min-width: 100px;
+  min-height: 25px;
+  border-right: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  outline-color: #017c41;
+  font-size: 18px;
+  font-family: "Noto Sans";
+}
+
+.input-cell.selected {
+  border: 2px solid #017c41;
+}
+
+.input-cell.top-cell-selected {
+  border-top: none;
+}
+
+/* 1px solid lightgray is the border initially given to an unselected cell */
+.input-cell.right-cell-selected {
+  border-right: 1px solid lightgray;
+}
+
+.input-cell.bottom-cell-selected {
+  border-bottom: 1px solid lightgray;
+}
+
+.input-cell.left-cell-selected {
+  border-left: none;
+}
+
+/* Sheet Bar */
+.sheet-bar {
+  height: 4vh;
+  display: flex;
+  align-items: center;
+}
+
+.icon-left-scroll,
+.icon-right-scroll {
+  font-size: 30px;
+  color: lightgray;
+}
+
+.icon-left-scroll:hover,
+.icon-right-scroll:hover {
+  background-color: rgba(211, 211, 211, 0.774);
+  cursor: pointer;
+}
+
+.icon-add {
+  color: #017c41;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.icon-add:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.sheet-tab-container {
+  display: flex;
+}
+
+.sheet-tab {
+  margin-left: 1px;
+  margin-right: 1px;
+  font-size: 18px;
+  font-weight: 600;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.sheet-tab:hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
+
+.sheet-tab.selected {
+  border-bottom: 4px solid #017c41;
+  background-color: #fff;
+  cursor: default;
+}
+
+/* Delete Rename Modal */
+
+.delete-rename-modal {
+  position: absolute;
+  bottom: 4vh;
+  background-color: #fff;
+  height: 60px;
+  width: 70px;
+  box-shadow: 0 0 3px 1px lightgray;
+}
+
+.delete-sheet,
+.rename-sheet {
+  height: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete-sheet:hover,
+.rename-sheet:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+/* Rename: On-Click */
+
+.sheet-rename-modal {
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc(50vw - 150px);
+  height: 200px;
+  width: 300px;
+  background-color: rgb(216, 216, 216);
+  text-align: center;
+  box-shadow: 0 0 3px 1px lightgray;
+}
+.action-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+
+.rename-modal-title {
+  font-size: 20px;
+}
+
+.new-sheet-name {
+  width: 200px;
+  height: 30px;
+  font-size: 16px;
+  outline-color: #017c41;
+}
+
+.submit-button {
+  background-color: #017c41;
+  color: white;
+  font-weight: 500;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  background-color: #025f32;
+}
+
+.cancel-button {
+  background-color: #da3012;
+  color: white;
+  font-weight: 500;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+
+.cancel-button:hover {
+  cursor: pointer;
+  background-color: #a7250e;
+}
