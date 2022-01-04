@@ -9,7 +9,8 @@ export const handleCreateBook = async (req: Request, res: Response) => {
   if (!error) {
     const book = new BookModel({
       bookName: req.body.bookName,
-      bookData: JSON.stringify({ "Sheet-1": {} }),
+      bookData: req.body.bookData,
+      user: req.body.userId,
     });
     const mongoResponse = await book.save();
     return res.json({ status: "ok", data: mongoResponse });

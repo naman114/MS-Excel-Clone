@@ -1,9 +1,10 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, Types, model } from "mongoose";
 
 // Create the interface
 export interface IBook extends Document {
   bookName: string;
   bookData: string;
+  user: Types.ObjectId;
 }
 
 // Create the schema
@@ -19,6 +20,11 @@ const BookSchema = new Schema<IBook>({
     default: JSON.stringify({
       "Sheet 1": {},
     }),
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
 });
 
