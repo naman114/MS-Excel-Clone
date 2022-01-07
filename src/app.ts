@@ -2,11 +2,9 @@ import Express from "express";
 import cors from "cors";
 import apiRouter from "./routes";
 import config from "./config";
-import passport from "passport";
-import cookieParser from "cookie-parser";
-import cookieSession from "cookie-session";
 import flash from "connect-flash";
 import mongoose from "mongoose";
+import path from "path";
 
 export const app = Express();
 
@@ -19,26 +17,27 @@ app.use(
   })
 );
 
-app.use(
-  cookieSession({
-    name: "session",
-    keys: [config.COOKIE_SESSION_KEY],
-    maxAge: 24 * 60 * 60 * 1000 * 60, // 60 days
-  })
-);
-
 app.use(flash());
-app.use(cookieParser("secretcode"));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(Express.json());
+
+app.set("view engine", "pug");
+app.use(Express.static(path.join(__dirname, "../src/assets/static")));
+app.use(Express.static(path.join(__dirname, "../src/assets/public")));
+
+app.set("views", path.join(__dirname, "../src/assets/pages/"));
 
 app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
-  res.send(
-    'Hello there, see the documentation here: <a href="" target="__blank">Link</a>'
-  );
+  res.render("index");
+});
+
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+});
+
+app.get("/book", (req, res) => {
+  res.render("book");
 });
 
 export default app;
