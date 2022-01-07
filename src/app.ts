@@ -29,7 +29,11 @@ app.set("views", path.join(__dirname, "../src/assets/pages/"));
 app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
 app.get("/dashboard", (req, res) => {

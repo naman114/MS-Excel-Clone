@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "Montserrat", sans-serif;
 }
 
 * {
@@ -27,7 +28,6 @@ body {
   z-index: 1;
   top: 70vh;
   left: 5vw;
-  font-family: "Montserrat", sans-serif;
   font-size: 80px;
   color: #ffffff;
 }
@@ -52,7 +52,6 @@ body {
 /* Sign In Heading */
 .sign-in-to-continue {
   color: #68b62b;
-  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
 
@@ -76,7 +75,6 @@ hr {
   width: 30px;
   margin: -19px auto 10px;
   text-align: center;
-  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
 
@@ -98,7 +96,6 @@ hr {
 .signin-btn {
   color: #fff;
   background-color: #68b62b;
-  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
 
@@ -113,6 +110,5 @@ hr {
 
 .continue-with-google {
   margin: 0px;
-  font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
