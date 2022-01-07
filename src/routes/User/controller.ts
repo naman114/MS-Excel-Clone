@@ -6,14 +6,19 @@ import { UserModel } from "../../models/user.model";
 export const handleCreateUser = async (req: Request, res: Response) => {
   const { error } = schema.validate(req.body);
 
-  if (!error) {
-    const user = new UserModel({
-      email: req.body.email,
-      password: req.body.password,
-    });
-    const mongoResponse = await user.save();
-    return res.json({ status: "ok", data: mongoResponse });
-  }
+  if (error) return res.status(500).json({ data: error.details[0].message });
 
-  return res.status(500).json({ data: error.details[0].message });
+  const user = new UserModel(req.body);
+  await user.save((err: any) => {
+    if (err) {
+      let errorToReturn = "Something went wrong. Please try again.";
+
+      if (err.code === 11000) {
+        errorToReturn = "That email is already taken, please try another";
+      }
+
+      return res.status(409).json({ error: errorToReturn });
+    }
+    return res.json({ status: "ok" });
+  });
 };
