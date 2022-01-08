@@ -5,6 +5,7 @@ import config from "./config";
 import flash from "connect-flash";
 import mongoose from "mongoose";
 import path from "path";
+import ejs from "ejs";
 
 export const app = Express();
 
@@ -20,11 +21,12 @@ app.use(
 app.use(flash());
 app.use(Express.json());
 
-app.set("view engine", "pug");
 app.use(Express.static(path.join(__dirname, "../src/assets/static")));
 app.use(Express.static(path.join(__dirname, "../src/assets/public")));
 
 app.set("views", path.join(__dirname, "../src/assets/pages/"));
+app.engine("html", ejs.renderFile);
+app.set("view engine", "html");
 
 app.use("/api", apiRouter);
 
@@ -38,6 +40,29 @@ app.post("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("register");
+});
+
+import { schema } from "./routes/User/schema";
+import { UserModel } from "./models/user.model";
+
+app.post("/register", (req, res) => {
+  const { error } = schema.validate(req.body);
+
+  if (error) return res.status(500).json({ data: error.details[0].message });
+
+  const user = new UserModel(req.body);
+  user.save((err: any) => {
+    if (err) {
+      let errorToReturn = "Something went wrong. Please try again.";
+
+      if (err.code === 11000) {
+        errorToReturn = "That email is already taken, please try another";
+      }
+
+      return res.status(409).json({ error: errorToReturn });
+    }
+  });
+  res.redirect("/");
 });
 
 app.get("/dashboard", (req, res) => {
