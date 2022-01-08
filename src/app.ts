@@ -8,7 +8,7 @@ import path from "path";
 import ejs from "ejs";
 import bcrypt from "bcrypt";
 import client_sessions from "client-sessions";
-
+import helmet from "helmet";
 import { schema } from "./routes/User/schema";
 import { UserModel } from "./models/user.model";
 
@@ -30,6 +30,8 @@ app.use(
     duration: 3 * 60 * 60 * 1000, // 3 hours
   })
 );
+
+app.use(helmet());
 
 app.use(flash());
 app.use(Express.json());
