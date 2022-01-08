@@ -21,12 +21,14 @@ document.getElementById("register-btn").addEventListener("click", () => {
       },
       body: JSON.stringify(data),
     }).then((response) => {
-      console.log(response);
+      if (response.status === 500)
+        alert(`ERR ${response.status}: ${response.body.data}`);
+      else if (response.status === 409)
+        alert(`ERR ${response.status}: ${response.body.error}`);
+      else if (response.status === 200) {
+        alert("Registration successful. Please log in");
+        window.location.href = "/";
+      }
     });
-
-    // if (response.status === 500)
-    //   alert(`ERR ${response.status}: ${response.body.data}`);
-    // else if (response.status === 409)
-    //   alert(`ERR ${response.status}: ${response.body.error}`);
   }
 });

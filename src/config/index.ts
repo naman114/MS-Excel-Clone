@@ -4,7 +4,7 @@ dotenvconfig();
 
 export const config = {
   PORT: process.env.PORT || 5000,
-  COOKIE_SESSION_KEY: process.env.COOKIE_SESSION_KEY,
+  COOKIE_SECRET: process.env.COOKIE_SECRET,
 };
 
 export default config;
