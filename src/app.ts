@@ -43,6 +43,36 @@ app.set("view engine", "html");
 
 app.use("/api", apiRouter);
 
+app.use((req, res, next) => {
+  if (req.session === undefined || req.session.userId === undefined) {
+    return next();
+  }
+
+  UserModel.findById(req.session.userId, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      return next();
+    }
+
+    user.password = undefined;
+
+    req.user = user;
+    res.locals.user = user;
+
+    next();
+  });
+});
+
+function loginRequired(req, res, next) {
+  if (!req.user) {
+    return res.redirect("/");
+  }
+  next();
+}
+
 app.get("/", (req, res) => {
   res.render("login");
 });
@@ -85,18 +115,8 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.get("/dashboard", (req, res, next) => {
-  if (req.session === undefined || req.session.userId === undefined) {
-    return res.redirect("/");
-  }
-
-  UserModel.findById(req.session.userId, (err, user) => {
-    if (err) return next(err);
-
-    if (!user) return res.redirect("/");
-
-    res.render("dashboard");
-  });
+app.get("/dashboard", loginRequired, (req, res, next) => {
+  res.render("dashboard");
 });
 
 app.get("/book", (req, res) => {
