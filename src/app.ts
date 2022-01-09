@@ -17,7 +17,7 @@ import { BookModel } from "./models/book.model";
 
 export const app = Express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/excel");
+mongoose.connect(config.MONGOURI!);
 
 app.use(
   cors({
@@ -149,7 +149,7 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/dashboard", loginRequired, (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   res.render("dashboard");
 });
 
@@ -237,8 +237,8 @@ app.post("/api/book/data/:bid", (req, res) => {
 
 app.post("/api/book", (req, res) => {
   if (!req.user || !req.user._id || req.user._id != req.body.userId) {
-    console.log(req.user._id);
-    console.log(req.body.userId);
+    // console.log(req.user._id);
+    // console.log(req.body.userId);
     res.status(401).json({ err: "Unauthorized" });
   } else {
     const book = new BookModel({
