@@ -37,8 +37,8 @@ async function fetchBookData() {
       CellData = JSON.parse(jsonData.bookData);
       SelectedSheet = jsonData.selectedSheet;
       TotalSheets = jsonData.totalSheets;
-      LastAddedSheet = jsonData.LastAddedSheet;
-      LoadSheet();
+      LastAddedSheet = jsonData.lastAddedSheet;
+      LoadExistingSheets();
     });
 }
 
@@ -72,8 +72,14 @@ async function saveBookData() {
 }
 
 $(document).ready(function () {
-  // fetch bookData
+  // fetch bookData and save (test)
   fetchBookData().then(() => saveBookData());
+  document.getElementById("save-btn").addEventListener("click", () => {
+    console.log({ CellData });
+    saveBookData().then(() => {
+      console.log("saved");
+    });
+  });
   // Section: Column Code Generation and appending Column Elements to HTML
   for (let i = 1; i <= 100; i++) {
     let ColumnCode = "";
@@ -529,7 +535,6 @@ function ClearSheet() {
 
 // Function to load existing cell data for a particular sheet
 function LoadSheet() {
-  document.getElementById("title-bar").innerText = BookName;
   let CurSheetData = CellData[SelectedSheet];
   for (let i of Object.keys(CurSheetData)) {
     for (let j of Object.keys(CurSheetData[i])) {
@@ -551,6 +556,24 @@ function LoadSheet() {
       $(`#row-${i}-col-${j}`).css("font-size", CurCellProps["font-size"]);
     }
   }
+}
+
+// Function to load all sheets
+function LoadExistingSheets() {
+  document.getElementById("title-text").innerText = BookName;
+  for (let sheetname of Object.keys(CellData)) {
+    if (sheetname === SelectedSheet) {
+      $(".sheet-tab-container").append(
+        `<div class="sheet-tab selected">${sheetname}</div>`
+      );
+    } else {
+      $(".sheet-tab-container").append(
+        `<div class="sheet-tab">${sheetname}</div>`
+      );
+    }
+    SheetTabWasClicked();
+  }
+  LoadSheet();
 }
 
 // Function invoked when any sheet tab is clicked

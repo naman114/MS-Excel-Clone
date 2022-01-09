@@ -210,7 +210,7 @@ app.post("/api/book/data/:bid", (req, res) => {
     { _id: bookId },
     {
       bookName: req.body.bookName,
-      bookData: req.body.bookData,
+      bookData: req.body.cellData,
       selectedSheet: req.body.selectedSheet,
       totalSheets: req.body.totalSheets,
       lastAddedSheet: req.body.lastAddedSheet,

@@ -20,9 +20,28 @@ body {
   background-color: #017c41;
   color: #fff;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+}
+.title-text {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+.save-btn {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  margin-right: 30px;
+}
+
+.save-btn:hover {
+  cursor: pointer;
+}
+
+.save-btn-text {
+  border: 1px solid white;
+  padding: 3px;
+  border-radius: 5px;
 }
 
 /* Menu bar & Menu Items */
