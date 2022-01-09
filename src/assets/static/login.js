@@ -5,7 +5,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
   if (email.value === "") alert("Email cannot be empty");
   else if (password.value === "") alert("Password cannot be empty");
   else {
-    const url = "http://localhost:5000/login";
+    const url = "https://msexcelclone.netlify.app/login";
     const data = {
       email: email.value,
       password: password.value,

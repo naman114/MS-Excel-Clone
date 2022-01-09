@@ -26,7 +26,7 @@ let BookName = "Untitled Book";
 
 async function fetchBookData() {
   const bookId = window.location.href.split("/").at(-1);
-  const url = `http://localhost:5000/api/book/data/${bookId}`;
+  const url = `https://msexcelclone.netlify.app/api/book/data/${bookId}`;
   await fetch(url)
     .then((response) => {
       return response.json();
@@ -44,7 +44,7 @@ async function fetchBookData() {
 
 async function saveBookData() {
   const bookId = window.location.href.split("/").at(-1);
-  const url = `http://localhost:5000/api/book/data/${bookId}`;
+  const url = `https://msexcelclone.netlify.app/api/book/data/${bookId}`;
 
   const data = {
     cellData: JSON.stringify(CellData),

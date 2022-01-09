@@ -3,7 +3,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   window.location.href = "/logout";
 });
 
-let url = "http://localhost:5000/user";
+let url = "https://msexcelclone.netlify.app/user";
 fetch(url)
   .then((response) => {
     return response.json();
@@ -18,7 +18,7 @@ fetch(url)
 
     document.getElementById("user-initials").innerText = initials;
 
-    const fetchBooks = `http://localhost:5000/api/book/${_id}`;
+    const fetchBooks = `https://msexcelclone.netlify.app/api/book/${_id}`;
     fetch(fetchBooks)
       .then((response) => {
         return response.json();
@@ -82,7 +82,8 @@ fetch(url)
                 const bookName =
                   document.querySelector(".new-sheet-name").value;
 
-                const createBookUrl = "http://localhost:5000/api/book";
+                const createBookUrl =
+                  "https://msexcelclone.netlify.app/api/book";
                 const newBookData = {
                   bookName: bookName,
                   userId: _id,
