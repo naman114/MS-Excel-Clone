@@ -1,3 +1,8 @@
+// Event listener for logout
+document.getElementById("logout-btn").addEventListener("click", () => {
+  window.location.href = "/logout";
+});
+
 let url = "http://localhost:5000/user";
 fetch(url)
   .then((response) => {
