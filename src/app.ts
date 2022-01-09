@@ -63,7 +63,7 @@ app.set("views", path.join(__dirname, "../src/assets/pages/"));
 app.engine("html", ejs.renderFile);
 app.set("view engine", "html");
 
-app.use("/api", apiRouter);
+// app.use("/api", apiRouter);
 
 app.use((req, res, next) => {
   if (req.session === undefined || req.session.userId === undefined) {
@@ -156,7 +156,7 @@ app.get("/dashboard", loginRequired, (req, res, next) => {
 app.get("/api/book/:uid", (req, res) => {
   const userId = req.params.uid;
 
-  if (req.user._id != userId) {
+  if (!req.user || !req.user._id || req.user._id != userId) {
     res.status(401).json({ err: "Unauthorized" });
   } else {
     BookModel.find({ user: new Types.ObjectId(userId) }, (err, books) => {
@@ -188,7 +188,7 @@ app.get("/api/book/data/:bid", (req, res) => {
     if (err || book.length === 0) {
       res.status(404).json({ error: "404: Not found" });
     } else {
-      if (!book.user.equals(req.user._id)) {
+      if (!req.user || !req.user._id || !book.user.equals(req.user._id)) {
         res.status(401).json({ error: "401: Unauthorized" });
       } else {
         res.json({
@@ -219,7 +219,7 @@ app.post("/api/book/data/:bid", (req, res) => {
       if (err || book.length === 0) {
         res.status(404).json({ error: "404: Not found" });
       } else {
-        if (!book.user.equals(req.user._id)) {
+        if (!req.user || !req.user._id || !book.user.equals(req.user._id)) {
           res.status(401).json({ error: "401: Unauthorized" });
         } else {
           res.json({
@@ -233,6 +233,26 @@ app.post("/api/book/data/:bid", (req, res) => {
       }
     }
   );
+});
+
+app.post("/api/book", (req, res) => {
+  if (!req.user || !req.user._id || req.user._id != req.body.userId) {
+    console.log(req.user._id);
+    console.log(req.body.userId);
+    res.status(401).json({ err: "Unauthorized" });
+  } else {
+    const book = new BookModel({
+      bookName: req.body.bookName,
+      user: req.body.userId,
+    });
+    book.save((err: any, savedBook) => {
+      if (err) {
+        const errorToReturn = "Something went wrong. Please try again.";
+        return res.status(500).json({ error: errorToReturn });
+      }
+      return res.json({ status: "ok", data: savedBook });
+    });
+  }
 });
 
 app.get("*", (req, res) => {

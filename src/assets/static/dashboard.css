@@ -78,6 +78,29 @@ body {
   border-bottom: 2px solid var(--primary-color);
 }
 
+.nav-item-recent {
+  display: flex;
+  flex: 1;
+}
+
+.nav-item-new {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.nav-item-new-text {
+  border: 2px solid var(--primary-color);
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: 20px;
+}
+
+.nav-item-new-text:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 .list-item {
   display: flex;
   height: 48px;
@@ -110,4 +133,59 @@ body {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+/* Create new sheet modal */
+
+.sheet-rename-modal {
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc(50vw - 150px);
+  height: 200px;
+  width: 300px;
+  background-color: rgb(216, 216, 216);
+  text-align: center;
+  box-shadow: 0 0 3px 1px lightgray;
+}
+.action-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+}
+
+.rename-modal-title {
+  font-size: 20px;
+}
+
+.new-sheet-name {
+  width: 200px;
+  height: 30px;
+  font-size: 16px;
+  outline-color: #017c41;
+}
+
+.submit-button {
+  background-color: #017c41;
+  color: white;
+  font-weight: 500;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  background-color: #025f32;
+}
+
+.cancel-button {
+  background-color: #da3012;
+  color: white;
+  font-weight: 500;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+
+.cancel-button:hover {
+  cursor: pointer;
+  background-color: #a7250e;
 }

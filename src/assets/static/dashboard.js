@@ -50,6 +50,54 @@ fetch(url)
             window.location.href = `/book/${elem.id}`;
           });
         });
+
+        // Event-listener for create book
+        document
+          .getElementById("nav-item-new")
+          .addEventListener("click", () => {
+            document.getElementById(
+              "container"
+            ).innerHTML += `<div class="sheet-rename-modal">
+          <h4 class="rename-modal-title">Create New Book</h4>
+          <input type="text" class="new-sheet-name" placeholder="Enter Name" value="Untitled Book" autofocus/>
+          <div class="action-buttons">
+          <div class="submit-button">Create</div>
+          <div class="cancel-button">Cancel</div>
+          </div>
+          </div>`;
+            document.querySelector(".new-sheet-name").select();
+            document
+              .querySelector(".cancel-button")
+              .addEventListener("click", () => {
+                document.querySelector(".sheet-rename-modal").remove();
+              });
+            document
+              .querySelector(".submit-button")
+              .addEventListener("click", () => {
+                const bookName =
+                  document.querySelector(".new-sheet-name").value;
+
+                const createBookUrl = "http://localhost:5000/api/book";
+                const newBookData = {
+                  bookName: bookName,
+                  userId: _id,
+                };
+
+                fetch(createBookUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newBookData),
+                })
+                  .then((response) => {
+                    return response.json();
+                  })
+                  .then((jsonData) => {
+                    window.location.href = `/book/${jsonData.data._id}`;
+                  });
+              });
+          });
       });
   });
 
