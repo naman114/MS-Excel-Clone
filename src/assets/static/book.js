@@ -22,7 +22,64 @@ let TotalSheets = 1;
 // The TotalSheets cannot be zero since you cannot delete the original sheet
 let LastAddedSheet = 1;
 
+let BookName = "Untitled Book";
+
+async function fetchBookData() {
+  const bookId = window.location.href.split("/").at(-1);
+  const url = `https://msexcelclone.netlify.app/api/book/data/${bookId}`;
+  await fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      // console.log(jsonData);
+      BookName = jsonData.bookName;
+      CellData = JSON.parse(jsonData.bookData);
+      SelectedSheet = jsonData.selectedSheet;
+      TotalSheets = jsonData.totalSheets;
+      LastAddedSheet = jsonData.lastAddedSheet;
+      LoadExistingSheets();
+    });
+}
+
+async function saveBookData() {
+  const bookId = window.location.href.split("/").at(-1);
+  const url = `https://msexcelclone.netlify.app/api/book/data/${bookId}`;
+
+  const data = {
+    cellData: JSON.stringify(CellData),
+    bookName: BookName,
+    selectedSheet: SelectedSheet,
+    totalSheets: TotalSheets,
+    lastAddedSheet: LastAddedSheet,
+  };
+
+  // console.log("data before post", data);
+
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      // console.log(jsonData);
+    });
+}
+
 $(document).ready(function () {
+  // fetch bookData and save (test)
+  fetchBookData().then(() => saveBookData());
+  document.getElementById("save-btn").addEventListener("click", () => {
+    // console.log({ CellData });
+    saveBookData().then(() => {
+      // console.log("saved");
+    });
+  });
   // Section: Column Code Generation and appending Column Elements to HTML
   for (let i = 1; i <= 100; i++) {
     let ColumnCode = "";
@@ -254,8 +311,8 @@ $(document).ready(function () {
   });
 
   $(".icon-paste").click(function () {
-    console.log(CutOrCopy);
-    console.log(CutOrCopyCells);
+    // console.log(CutOrCopy);
+    // console.log(CutOrCopyCells);
 
     // Without pressing cut or copy, paste will not work
     if (CutOrCopy != "") {
@@ -417,7 +474,7 @@ function UpdateCells(property, value, defaultPossible) {
     }
     UpdateHeader(this);
   });
-  console.log(CellData);
+  // console.log(CellData);
 }
 
 function UpdateHeader(ele) {
@@ -499,6 +556,24 @@ function LoadSheet() {
       $(`#row-${i}-col-${j}`).css("font-size", CurCellProps["font-size"]);
     }
   }
+}
+
+// Function to load all sheets
+function LoadExistingSheets() {
+  document.getElementById("title-text").innerText = BookName;
+  for (let sheetname of Object.keys(CellData)) {
+    if (sheetname === SelectedSheet) {
+      $(".sheet-tab-container").append(
+        `<div class="sheet-tab selected">${sheetname}</div>`
+      );
+    } else {
+      $(".sheet-tab-container").append(
+        `<div class="sheet-tab">${sheetname}</div>`
+      );
+    }
+    SheetTabWasClicked();
+  }
+  LoadSheet();
 }
 
 // Function invoked when any sheet tab is clicked
