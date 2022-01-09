@@ -9,8 +9,11 @@ import ejs from "ejs";
 import bcrypt from "bcrypt";
 import client_sessions from "client-sessions";
 import helmet from "helmet";
+import { Types } from "mongoose";
+
 import { schema } from "./routes/User/schema";
 import { UserModel } from "./models/user.model";
+import { BookModel } from "./models/book.model";
 
 export const app = Express();
 
@@ -31,7 +34,24 @@ app.use(
   })
 );
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        // defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js",
+        ],
+        // connectSrc: ["'self'", "https://some-domain.com", "https://some.other.domain.com"],
+        // styleSrc: ["'self'", "fonts.googleapis.com", "'unsafe-inline'"],
+        // fontSrc: ["'self'", "fonts.gstatic.com"],
+        // imgSrc: ["'self'", "https://maps.gstatic.com", "https://maps.googleapis.com", "data:", "https://another-domain.com"],
+        // frameSrc: ["'self'", "https://www.google.com"]
+      },
+    },
+  })
+);
 
 app.use(flash());
 app.use(Express.json());
@@ -76,7 +96,9 @@ function loginRequired(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-  res.render("login");
+  if (req.user) {
+    res.redirect("/dashboard");
+  } else res.render("login");
 });
 
 app.post("/login", (req, res) => {
@@ -88,6 +110,15 @@ app.post("/login", (req, res) => {
     req.session.userId = user._id;
     return res.status(200).json({ status: "ok" });
   });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.reset();
+  res.redirect("/");
+});
+
+app.get("/user", (req, res) => {
+  res.json({ user: req.user });
 });
 
 app.get("/register", (req, res) => {
@@ -118,11 +149,94 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/dashboard", loginRequired, (req, res, next) => {
+  console.log(req.user);
   res.render("dashboard");
 });
 
-app.get("/book", (req, res) => {
-  res.render("book");
+app.get("/api/book/:uid", (req, res) => {
+  const userId = req.params.uid;
+
+  if (req.user._id != userId) {
+    res.status(401).json({ err: "Unauthorized" });
+  } else {
+    BookModel.find({ user: new Types.ObjectId(userId) }, (err, books) => {
+      res.json({ data: books });
+    });
+  }
+});
+
+app.get("/book/:bid", (req, res) => {
+  const bookId = req.params.bid;
+
+  BookModel.findOne({ _id: bookId }, (err, book) => {
+    if (err || book.length === 0) {
+      res.send("<h1>ERR 404: Not found</h1>");
+    } else {
+      if (!book.user.equals(req.user._id)) {
+        res.send("<h1>ERR 401: Unauthorized</h1>");
+      } else {
+        res.render("book");
+      }
+    }
+  });
+});
+
+app.get("/api/book/data/:bid", (req, res) => {
+  const bookId = req.params.bid;
+
+  BookModel.findOne({ _id: bookId }, (err, book) => {
+    if (err || book.length === 0) {
+      res.status(404).json({ error: "404: Not found" });
+    } else {
+      if (!book.user.equals(req.user._id)) {
+        res.status(401).json({ error: "401: Unauthorized" });
+      } else {
+        res.json({
+          bookName: book.bookName,
+          bookData: book.bookData,
+          selectedSheet: book.selectedSheet,
+          totalSheets: book.totalSheets,
+          lastAddedSheet: book.lastAddedSheet,
+        });
+      }
+    }
+  });
+});
+
+app.post("/api/book/data/:bid", (req, res) => {
+  const bookId = req.params.bid;
+
+  BookModel.findOneAndUpdate(
+    { _id: bookId },
+    {
+      bookName: req.body.bookName,
+      bookData: req.body.bookData,
+      selectedSheet: req.body.selectedSheet,
+      totalSheets: req.body.totalSheets,
+      lastAddedSheet: req.body.lastAddedSheet,
+    },
+    (err, book) => {
+      if (err || book.length === 0) {
+        res.status(404).json({ error: "404: Not found" });
+      } else {
+        if (!book.user.equals(req.user._id)) {
+          res.status(401).json({ error: "401: Unauthorized" });
+        } else {
+          res.json({
+            bookName: book.bookName,
+            bookData: book.bookData,
+            selectedSheet: book.selectedSheet,
+            totalSheets: book.totalSheets,
+            lastAddedSheet: book.lastAddedSheet,
+          });
+        }
+      }
+    }
+  );
+});
+
+app.get("*", (req, res) => {
+  res.send("<h1>404: Not Found</h1>");
 });
 
 export default app;

@@ -22,7 +22,58 @@ let TotalSheets = 1;
 // The TotalSheets cannot be zero since you cannot delete the original sheet
 let LastAddedSheet = 1;
 
+let BookName = "Untitled Book";
+
+async function fetchBookData() {
+  const bookId = window.location.href.split("/").at(-1);
+  const url = `http://localhost:5000/api/book/data/${bookId}`;
+  await fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      console.log(jsonData);
+      BookName = jsonData.bookName;
+      CellData = JSON.parse(jsonData.bookData);
+      SelectedSheet = jsonData.selectedSheet;
+      TotalSheets = jsonData.totalSheets;
+      LastAddedSheet = jsonData.LastAddedSheet;
+      LoadSheet();
+    });
+}
+
+async function saveBookData() {
+  const bookId = window.location.href.split("/").at(-1);
+  const url = `http://localhost:5000/api/book/data/${bookId}`;
+
+  const data = {
+    cellData: JSON.stringify(CellData),
+    bookName: BookName,
+    selectedSheet: SelectedSheet,
+    totalSheets: TotalSheets,
+    lastAddedSheet: LastAddedSheet,
+  };
+
+  console.log("data before post", data);
+
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonData) => {
+      console.log(jsonData);
+    });
+}
+
 $(document).ready(function () {
+  // fetch bookData
+  fetchBookData().then(() => saveBookData());
   // Section: Column Code Generation and appending Column Elements to HTML
   for (let i = 1; i <= 100; i++) {
     let ColumnCode = "";
@@ -478,6 +529,7 @@ function ClearSheet() {
 
 // Function to load existing cell data for a particular sheet
 function LoadSheet() {
+  document.getElementById("title-bar").innerText = BookName;
   let CurSheetData = CellData[SelectedSheet];
   for (let i of Object.keys(CurSheetData)) {
     for (let j of Object.keys(CurSheetData[i])) {
