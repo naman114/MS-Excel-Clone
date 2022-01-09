@@ -32,7 +32,7 @@ async function fetchBookData() {
       return response.json();
     })
     .then((jsonData) => {
-      console.log(jsonData);
+      // console.log(jsonData);
       BookName = jsonData.bookName;
       CellData = JSON.parse(jsonData.bookData);
       SelectedSheet = jsonData.selectedSheet;
@@ -54,7 +54,7 @@ async function saveBookData() {
     lastAddedSheet: LastAddedSheet,
   };
 
-  console.log("data before post", data);
+  // console.log("data before post", data);
 
   await fetch(url, {
     method: "POST",
@@ -67,7 +67,7 @@ async function saveBookData() {
       return response.json();
     })
     .then((jsonData) => {
-      console.log(jsonData);
+      // console.log(jsonData);
     });
 }
 
@@ -75,9 +75,9 @@ $(document).ready(function () {
   // fetch bookData and save (test)
   fetchBookData().then(() => saveBookData());
   document.getElementById("save-btn").addEventListener("click", () => {
-    console.log({ CellData });
+    // console.log({ CellData });
     saveBookData().then(() => {
-      console.log("saved");
+      // console.log("saved");
     });
   });
   // Section: Column Code Generation and appending Column Elements to HTML
@@ -311,8 +311,8 @@ $(document).ready(function () {
   });
 
   $(".icon-paste").click(function () {
-    console.log(CutOrCopy);
-    console.log(CutOrCopyCells);
+    // console.log(CutOrCopy);
+    // console.log(CutOrCopyCells);
 
     // Without pressing cut or copy, paste will not work
     if (CutOrCopy != "") {
@@ -474,7 +474,7 @@ function UpdateCells(property, value, defaultPossible) {
     }
     UpdateHeader(this);
   });
-  console.log(CellData);
+  // console.log(CellData);
 }
 
 function UpdateHeader(ele) {

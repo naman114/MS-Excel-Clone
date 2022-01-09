@@ -19,7 +19,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           window.location.href = "/dashboard";
         }
