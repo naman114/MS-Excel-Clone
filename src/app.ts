@@ -163,14 +163,14 @@ app.get("/api/book/:uid", (req, res) => {
   }
 });
 
-app.get("/book/:bid", (req, res) => {
+app.get("/book/:bid", loginRequired, (req, res) => {
   const bookId = req.params.bid;
 
   BookModel.findOne({ _id: bookId }, (err, book) => {
     if (err || book.length === 0) {
       res.send("<h1>ERR 404: Not found</h1>");
     } else {
-      if (!book.user.equals(req.user._id)) {
+      if (!req.user || !req.user._id || !book.user.equals(req.user._id)) {
         res.send("<h1>ERR 401: Unauthorized</h1>");
       } else {
         res.render("book");
