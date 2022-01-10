@@ -7,7 +7,7 @@ document.getElementById("register-btn").addEventListener("click", () => {
   else if (email.value === "") alert("Email cannot be empty");
   else if (password.value === "") alert("Password cannot be empty");
   else {
-    const url = "https://msexcelclone.netlify.app/register";
+    const url = "https://ms-excel-clone.herokuapp.com/register";
     const data = {
       name: name.value,
       email: email.value,

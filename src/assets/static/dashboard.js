@@ -3,7 +3,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   window.location.href = "/logout";
 });
 
-let url = "https://msexcelclone.netlify.app/user";
+let url = "https://ms-excel-clone.herokuapp.com/user";
 fetch(url)
   .then((response) => {
     return response.json();
@@ -18,7 +18,7 @@ fetch(url)
 
     document.getElementById("user-initials").innerText = initials;
 
-    const fetchBooks = `https://msexcelclone.netlify.app/api/book/${_id}`;
+    const fetchBooks = `https://ms-excel-clone.herokuapp.com/api/book/${_id}`;
     fetch(fetchBooks)
       .then((response) => {
         return response.json();
@@ -83,7 +83,7 @@ fetch(url)
                   document.querySelector(".new-sheet-name").value;
 
                 const createBookUrl =
-                  "https://msexcelclone.netlify.app/api/book";
+                  "https://ms-excel-clone.herokuapp.com/api/book";
                 const newBookData = {
                   bookName: bookName,
                   userId: _id,
