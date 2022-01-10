@@ -2,7 +2,6 @@ import Express from "express";
 import cors from "cors";
 import apiRouter from "./routes";
 import config from "./config";
-import flash from "connect-flash";
 import mongoose from "mongoose";
 import path from "path";
 import ejs from "ejs";
@@ -53,7 +52,6 @@ app.use(
   })
 );
 
-app.use(flash());
 app.use(Express.json());
 
 app.use(Express.static(path.join(__dirname, "../src/assets/static")));
