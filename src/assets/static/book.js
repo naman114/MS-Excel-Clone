@@ -26,7 +26,7 @@ let BookName = "Untitled Book";
 
 async function fetchBookData() {
   const bookId = window.location.href.split("/").at(-1);
-  const url = `https://ms-excel-clone.herokuapp.com/api/book/data/${bookId}`;
+  const url = `${window.location.origin}/api/book/data/${bookId}`;
   await fetch(url)
     .then((response) => {
       return response.json();
@@ -44,7 +44,7 @@ async function fetchBookData() {
 
 async function saveBookData() {
   const bookId = window.location.href.split("/").at(-1);
-  const url = `https://ms-excel-clone.herokuapp.com/api/book/data/${bookId}`;
+  const url = `${window.location.origin}/api/book/data/${bookId}`;
 
   const data = {
     cellData: JSON.stringify(CellData),
@@ -335,7 +335,7 @@ $(document).ready(function () {
             // Source cell value
             let value =
               CellData[SelectedSheet][CutOrCopyCells[i][0]][
-                CutOrCopyCells[i][1]
+              CutOrCopyCells[i][1]
               ];
             let newRow = CutOrCopyCells[i][0] + dx;
             let newCol = CutOrCopyCells[i][1] + dy;
@@ -375,7 +375,7 @@ $(document).ready(function () {
           ) {
             let value =
               CellData[SelectedSheet][CutOrCopyCells[i][0]][
-                CutOrCopyCells[i][1]
+              CutOrCopyCells[i][1]
               ];
             let newRow = CutOrCopyCells[i][0] + dx;
             let newCol = CutOrCopyCells[i][1] + dy;

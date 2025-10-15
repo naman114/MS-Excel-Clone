@@ -3,7 +3,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   window.location.href = "/logout";
 });
 
-let url = "https://ms-excel-clone.herokuapp.com/user";
+let url = `${window.location.origin}/user`;
 fetch(url)
   .then((response) => {
     return response.json();
@@ -18,7 +18,7 @@ fetch(url)
 
     document.getElementById("user-initials").innerText = initials;
 
-    const fetchBooks = `https://ms-excel-clone.herokuapp.com/api/book/${_id}`;
+    const fetchBooks = `${window.location.origin}/api/book/${_id}`;
     fetch(fetchBooks)
       .then((response) => {
         return response.json();
@@ -39,8 +39,8 @@ fetch(url)
                 </div>
                 <div class="li-date">
                     <span class="li-text">${getFormattedDate(
-                      book.updatedAt
-                    )}</span>
+            book.updatedAt
+          )}</span>
                 </div>
             </div>
             <hr>
@@ -83,7 +83,7 @@ fetch(url)
                   document.querySelector(".new-sheet-name").value;
 
                 const createBookUrl =
-                  "https://ms-excel-clone.herokuapp.com/api/book";
+                  `${window.location.origin}/api/book`;
                 const newBookData = {
                   bookName: bookName,
                   userId: _id,

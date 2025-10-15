@@ -5,7 +5,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
   if (email.value === "") alert("Email cannot be empty");
   else if (password.value === "") alert("Password cannot be empty");
   else {
-    const url = "https://ms-excel-clone.herokuapp.com/login";
+    const url = `${window.location.origin}/login`;
     const data = {
       email: email.value,
       password: password.value,
